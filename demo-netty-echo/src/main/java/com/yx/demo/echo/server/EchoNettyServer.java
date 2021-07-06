@@ -9,11 +9,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-public class EchoServer {
+public class EchoNettyServer {
 
-    private int port;
+    private final int port;
 
-    public EchoServer(int port){
+    public EchoNettyServer(int port){
         this.port = port;
     }
 
@@ -65,7 +65,7 @@ public class EchoServer {
         if(args.length > 0){
             port = Integer.parseInt(args[0]);
         }
-        new EchoServer(port).run();
+        new EchoNettyServer(port).run();
     }
 
 }

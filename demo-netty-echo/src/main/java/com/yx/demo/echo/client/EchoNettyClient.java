@@ -11,13 +11,13 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.net.InetSocketAddress;
 
-public class EchoClient  {
+public class EchoNettyClient {
 
     private final String host;
 
     private final int port;
 
-    public EchoClient(String host, int port){
+    public EchoNettyClient(String host, int port){
         this.host = host;
         this.port = port;
     }
@@ -58,7 +58,7 @@ public class EchoClient  {
     }
 
     public static void main(String []args) throws InterruptedException {
-        new EchoClient("127.0.0.1",8080).start();
+        new EchoNettyClient("127.0.0.1",8080).start();
     }
 
 }

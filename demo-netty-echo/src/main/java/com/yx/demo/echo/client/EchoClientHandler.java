@@ -16,11 +16,14 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("Active");
+
+        // 完成连接后，向服务端发送一个数据
         ctx.writeAndFlush(Unpooled.copiedBuffer("hello world",CharsetUtil.UTF_8));
 
-        int i = 1/0;
+//        int i = 1/0;
 
     }
+
 
     /**
      * 执行数据读取（数据接收）操作

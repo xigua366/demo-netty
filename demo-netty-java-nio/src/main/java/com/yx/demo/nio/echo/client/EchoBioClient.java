@@ -31,6 +31,7 @@ public class EchoBioClient {
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
                 out.println(userInput);
+                System.out.println("write to server done");
                 System.out.println("echo: " + in.readLine());
             }
         } catch (UnknownHostException e) {

@@ -28,6 +28,7 @@
 		<module>demo-netty-java-bio</module>
 		<module>demo-netty-java-nio</module>
 		<module>demo-netty-echo</module>
+		<module>demo-netty-http</module>
 	</modules>
 
 	<dependencyManagement>

@@ -11,7 +11,7 @@ import java.net.Socket;
  * @author yangxi
  * @version 1.0
  */
-public class EchoBioServer {
+public class Echo01BioServer {
 
     private static final int PORT = 9000;
 
@@ -31,7 +31,7 @@ public class EchoBioServer {
 
                 // 阻塞等待客户端连接上来
                 clientSocket = serverSocket.accept();
-                new EchoBioServerHandler(clientSocket).start();
+                new Echo01BioServerHandler(clientSocket).start();
             }
 
         } catch (Exception e) {

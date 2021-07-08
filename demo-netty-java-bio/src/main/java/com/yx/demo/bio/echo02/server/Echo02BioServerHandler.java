@@ -12,11 +12,11 @@ import java.net.Socket;
  * @author yangxi
  * @version 1.0
  */
-public class EchoBioServerHandler extends Thread {
+public class Echo02BioServerHandler extends Thread {
 
     private Socket clientSocket;
 
-    public EchoBioServerHandler(Socket clientSocket) {
+    public Echo02BioServerHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 
@@ -31,19 +31,26 @@ public class EchoBioServerHandler extends Thread {
             // 读取客户端发送过来的数据
             in = new BufferedInputStream(clientSocket.getInputStream());
 
-            // 向客户端响应数据
+            // 向客户端响应结果
             out = new BufferedOutputStream(clientSocket.getOutputStream());
 
             byte[] bytes = new byte[1024];
             int len = 0;
             while ((len = in.read(bytes)) > 0 ) {
-                System.out.println("string:" + new String(bytes, 0, len));
-                out.write(bytes, 0, len);
+                String data = new String(bytes, 0, len);
+                System.out.println("data:" + data);
+
+                // 如果客户端发送error，则返回错误报文响应
+                String ack = null;
+                if("error".equals(data)) {
+                    ack = "{\"code\":-1, \"data\": null, \"msg\":\"未知错误\" }";
+                } else {
+                    ack = "{\"code\":0, \"data\": \"" + data + "\", \"msg\":null }";
+                }
+
+                out.write(ack.getBytes());
                 out.flush();
             }
-
-            // 显示告诉服务端，数据已经发送完毕了
-            clientSocket.shutdownOutput();
 
         } catch (Exception e) {
             e.printStackTrace();

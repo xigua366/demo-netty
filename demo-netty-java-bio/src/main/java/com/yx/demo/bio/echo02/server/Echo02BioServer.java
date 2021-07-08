@@ -11,7 +11,7 @@ import java.net.Socket;
  * @author yangxi
  * @version 1.0
  */
-public class EchoBioServer {
+public class Echo02BioServer {
 
     private static final int PORT = 9000;
 
@@ -26,12 +26,14 @@ public class EchoBioServer {
             serverSocket = new ServerSocket(9000);
             System.out.println("the echo bio server is start in port :" + PORT);
 
-            // 把客户端请求交给一个线程去处理
+
             while (true) {
 
                 // 阻塞等待客户端连接上来
                 clientSocket = serverSocket.accept();
-                new EchoBioServerHandler(clientSocket).start();
+
+                // 把客户端读写请求交给一个线程去处理，使之能支持多个客户端同时来连接
+                new Echo02BioServerHandler(clientSocket).start();
             }
 
         } catch (Exception e) {

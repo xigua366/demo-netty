@@ -12,11 +12,11 @@ import java.net.Socket;
  * @author yangxi
  * @version 1.0
  */
-public class EchoBioServerHandler extends Thread {
+public class Echo01BioServerHandler extends Thread {
 
     private Socket clientSocket;
 
-    public EchoBioServerHandler(Socket clientSocket) {
+    public Echo01BioServerHandler(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 
@@ -36,6 +36,8 @@ public class EchoBioServerHandler extends Thread {
 
             byte[] bytes = new byte[1024];
             int len = 0;
+
+            // 如果client端没有数据发送过来，服务端会一直阻塞在read()方法上
             while ((len = in.read(bytes)) > 0 ) {
                 System.out.println("string:" + new String(bytes, 0, len));
                 out.write(bytes, 0, len);

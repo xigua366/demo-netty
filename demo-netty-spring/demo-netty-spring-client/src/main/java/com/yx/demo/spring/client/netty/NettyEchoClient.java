@@ -1,4 +1,4 @@
-package com.yx.demo.echo.client;
+package com.yx.demo.spring.client.netty;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -8,33 +8,41 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.net.InetSocketAddress;
 
-public class EchoNettyClient {
+/**
+ * <p>
+ *
+ * </p>
+ *
+ * @author yangxi
+ * @version 1.0
+ */
+public class NettyEchoClient implements InitializingBean {
 
-    private final String host;
+    private SocketChannel socketChannel;
 
-    private final int port;
-
-    public EchoNettyClient(String host, int port){
-        this.host = host;
-        this.port = port;
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        new Thread(() -> {
+            try {
+                startEchoClient();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
-
-
-    public void start() throws InterruptedException {
-
+    private void startEchoClient() throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
 
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(group)
-
                     .channel(NioSocketChannel.class)
-
-                    .remoteAddress(new InetSocketAddress(host, port))
+                    .remoteAddress(new InetSocketAddress("localhost", 7001))
                     .option(ChannelOption.TCP_NODELAY,true)
                     .handler(new ChannelInitializer<SocketChannel>() {
 
@@ -48,21 +56,18 @@ public class EchoNettyClient {
             ChannelFuture channelFuture = bootstrap.connect().sync();
 
             if(channelFuture.isSuccess()) {
-                SocketChannel socketChannel = (SocketChannel) channelFuture.channel();
+                socketChannel = (SocketChannel) channelFuture.channel();
             }
 
             //阻塞直到客户端通道关闭
             channelFuture.channel().closeFuture().sync();
-
         }finally {
             //优雅退出，释放NIO线程组
             group.shutdownGracefully();
         }
-
     }
 
-    public static void main(String []args) throws InterruptedException {
-        new EchoNettyClient("127.0.0.1",8080).start();
+    public SocketChannel getSocketChannel() {
+        return socketChannel;
     }
-
 }

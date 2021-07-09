@@ -29,6 +29,8 @@
 		<module>demo-netty-java-nio</module>
 		<module>demo-netty-echo</module>
 		<module>demo-netty-http</module>
+		<module>demo-netty-spring</module>
+		<module>demo-netty-tech</module>
 	</modules>
 
 	<dependencyManagement>

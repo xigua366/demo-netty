@@ -30,6 +30,7 @@
 		<module>demo-netty-echo</module>
 		<module>demo-netty-http</module>
 		<module>demo-netty-spring</module>
+		<module>demo-netty-rpc</module>
 		<module>demo-netty-tech</module>
 	</modules>
 

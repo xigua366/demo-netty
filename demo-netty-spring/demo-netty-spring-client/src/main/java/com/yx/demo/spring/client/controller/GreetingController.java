@@ -1,6 +1,5 @@
 package com.yx.demo.spring.client.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yx.demo.spring.client.common.EchoFuture;
 import com.yx.demo.spring.client.common.EchoModel;
@@ -51,7 +50,6 @@ public class GreetingController {
 //        String jsonStr = "\"{'data':'hello','requestId':0}\"";
 
         nettyEchoClient.getSocketChannel().writeAndFlush(Unpooled.wrappedBuffer(jsonStr.getBytes(StandardCharsets.UTF_8)));
-
         return future.getPromise().get(future.getTimeout(), TimeUnit.SECONDS).getData();
     }
 

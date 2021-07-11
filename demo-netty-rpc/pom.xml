@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.yx.demo</groupId>
+		<artifactId>demo-netty</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../../demo-netty</relativePath>
+	</parent>
+
+	<!-- netty实现简版rpc 示例代码 -->
+	<artifactId>demo-netty-rpc</artifactId>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>demo-netty-rpc-consumer</module>
+		<module>demo-netty-rpc-core</module>
+		<module>demo-netty-rpc-facade</module>
+		<module>demo-netty-rpc-protocol</module>
+		<module>demo-netty-rpc-provider</module>
+		<module>demo-netty-rpc-registry</module>
+	</modules>
+
+</project>

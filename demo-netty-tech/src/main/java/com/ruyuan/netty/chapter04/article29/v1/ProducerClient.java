@@ -1,4 +1,4 @@
-package com.ruyuan.netty.chapter04.article29;
+package com.ruyuan.netty.chapter04.article29.v1;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -26,8 +26,8 @@ public class ProducerClient extends Thread {
         try {
             selector = Selector.open();
             socketChannel = SocketChannel.open();
-            socketChannel.bind(new InetSocketAddress(HOST, PORT));
             socketChannel.configureBlocking(false);
+            socketChannel.connect(new InetSocketAddress(HOST, PORT));
             socketChannel.register(selector,
                     SelectionKey.OP_CONNECT);
         } catch (Exception e) {
@@ -84,4 +84,6 @@ public class ProducerClient extends Thread {
                     SelectionKey.OP_READ);
         }
     }
+
+
 }

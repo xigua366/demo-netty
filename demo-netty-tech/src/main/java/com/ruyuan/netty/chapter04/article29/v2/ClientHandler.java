@@ -1,14 +1,14 @@
-package com.ruyuan.netty.chapter04.article30.v2;
+package com.ruyuan.netty.chapter04.article29.v2;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
 /**
- * NIO服务端Reactor模型Handler组件
- * 处理与客户端的读写请求
+ * NIO客户端Reactor模型Handler组件
+ * 处理与服务端的读写请求
  */
-public class Handler {
+public class ClientHandler {
 
     private final SelectionKey selectionKey;
 
@@ -20,28 +20,25 @@ public class Handler {
     private final ByteBuffer writeBuffer =
             ByteBuffer.allocate(2048);
 
-    public Handler(SelectionKey selectionKey) {
+    public ClientHandler(SelectionKey selectionKey) {
         this.selectionKey = selectionKey;
     }
 
     /**
-     * 读取客户端请求数据
+     * 读取服务端响应数据
      */
     public void read() {
         try {
             SocketChannel socketChannel =
                     (SocketChannel) selectionKey.channel();
 
-            // 读取客户端发送的数据
+            // 读取服务端发送的数据
             readBuffer.clear();
             socketChannel.read(readBuffer);
 
-            // 打印客户端发送的数据
-            System.out.println("客户端发送：" +
+            // 打印服务端响应的数据
+            System.out.println("服务端响应：" +
                     new String(readBuffer.array()));
-
-            // 睡眠2秒模拟存储数据
-            Thread.sleep(2000);
 
             // 移除读事件并监听写事件
             selectionKey.interestOps(
@@ -55,17 +52,16 @@ public class Handler {
     }
 
     /**
-     * 向客户端写数据
+     * 向服务端写数据
      */
     public void write() {
         try {
-
             SocketChannel socketChannel =
                     (SocketChannel) selectionKey.channel();
-            // 响应客户端的数据
+
+            // 向服务端发送hello world
             writeBuffer.clear();
-            writeBuffer.put((new String(
-                    readBuffer.array())).getBytes());
+            writeBuffer.put("hello world".getBytes());
             writeBuffer.flip();
             socketChannel.write(writeBuffer);
 

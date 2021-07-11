@@ -6,6 +6,7 @@ package com.ruyuan.netty.chapter04.article30.v2;
 public class BrokerServerTest {
 
     public static void main(String[] args) {
-        new Thread(new ReactorThread()).start();
+        int port = 9092;
+        new Thread(new ServerReactor(port)).start();
     }
 }

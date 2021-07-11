@@ -9,19 +9,19 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * NIO客户端Reactor线程
+ * NIO客户端的Reactor组件
  *
  * 1、启动NIO Client并向服务端发起连接请求
  * 2、监听Selector网络事件
  * 3、根据不同的事件进行任务分发
  */
-public class ReactorThread implements Runnable {
+public class ClientReactor implements Runnable {
 
     private Selector selector;
 
     private SocketChannel socketChannel;
 
-    public ReactorThread(String host, int port) {
+    public ClientReactor(String host, int port) {
         // 1、启动NIO Client并向服务端发起连接请求
         try {
             selector = Selector.open();
@@ -32,7 +32,7 @@ public class ReactorThread implements Runnable {
 
             // 2、监听Selector网络事件
             SelectionKey selectionKey = socketChannel.register(selector, SelectionKey.OP_CONNECT);
-            selectionKey.attach(new Connector(selector, socketChannel));
+            selectionKey.attach(new ClientConnector(selector, socketChannel));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,14 +64,20 @@ public class ReactorThread implements Runnable {
      */
     private void dispatch(SelectionKey key) {
         if(key.isConnectable()) {
-            Connector connector = (Connector) key.attachment();
-            connector.connect();
+            // 可连接事件（OP_CONNECT）
+            ClientConnector clientConnector =
+                    (ClientConnector) key.attachment();
+            clientConnector.connect();
         } else if(key.isReadable()) {
-            Handler handler = (Handler) key.attachment();
-            handler.read();
+            // 读事件（OP_READ）
+            ClientHandler clientHandler =
+                    (ClientHandler) key.attachment();
+            clientHandler.read();
         } else if(key.isWritable()) {
-            Handler handler = (Handler) key.attachment();
-            handler.write();
+            // 写事件（OP_WRITE）
+            ClientHandler clientHandler =
+                    (ClientHandler) key.attachment();
+            clientHandler.write();
         }
     }
 }

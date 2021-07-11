@@ -6,7 +6,11 @@ package com.ruyuan.netty.chapter04.article29.v2;
 public class ProducerClientTest {
 
     public static void main(String[] args) {
-        new Thread(new ReactorThread("localhost", 9092)).start();
+        String host = "localhost";
+        int port = 9092;
+        Runnable runnable = new ClientReactor(host, port);
+        // 用一个独立的线程来运行
+        new Thread(runnable).start();
     }
 
 }

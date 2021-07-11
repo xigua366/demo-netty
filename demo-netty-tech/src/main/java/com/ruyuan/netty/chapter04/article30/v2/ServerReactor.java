@@ -14,25 +14,25 @@ import java.util.Set;
  * 2、监听Selector网络事件
  * 3、根据不同的事件进行任务分发
  */
-public class ReactorThread implements Runnable {
-
-    private final static int PORT = 9092;
+public class ServerReactor implements Runnable {
 
     private Selector selector;
     private ServerSocketChannel serverSocketChannel;
 
-    public ReactorThread() {
+    public ServerReactor(int port) {
         // 1、启动NIO Server并绑定本地的一个端口
         try {
             selector = Selector.open();
 
             serverSocketChannel = ServerSocketChannel.open();
-            serverSocketChannel.bind(new InetSocketAddress(PORT));
+            serverSocketChannel.bind(
+                    new InetSocketAddress(port));
             serverSocketChannel.configureBlocking(false);
-            SelectionKey key = serverSocketChannel.register(selector,
+            SelectionKey key = serverSocketChannel.register(
+                    selector,
                     SelectionKey.OP_ACCEPT);
-
-            key.attach(new Acceptor(selector, serverSocketChannel));
+            key.attach(new ServerAcceptor(selector,
+                    serverSocketChannel));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,14 +64,20 @@ public class ReactorThread implements Runnable {
      */
     private void dispatch(SelectionKey key) {
         if(key.isAcceptable()) {
-            Acceptor acceptor = (Acceptor) key.attachment();
-            acceptor.accept();
+            // 连接建立就绪事件（OP_ACCEPT）
+            ServerAcceptor serverAcceptor =
+                    (ServerAcceptor) key.attachment();
+            serverAcceptor.accept();
         } else if(key.isReadable()) {
-            Handler handler = (Handler) key.attachment();
-            handler.read();
+            // 读事件（OP_READ）
+            ServerHandler serverHandler =
+                    (ServerHandler) key.attachment();
+            serverHandler.read();
         } else if(key.isWritable()) {
-            Handler handler = (Handler) key.attachment();
-            handler.write();
+            // 写事件（OP_WRITE）
+            ServerHandler serverHandler =
+                    (ServerHandler) key.attachment();
+            serverHandler.write();
         }
     }
 }

@@ -11,7 +11,8 @@ package com.yx.demo.nio.reactor.basic;
 public class BasicReactorTest {
 
     public static void main(String[] args) {
-
+        ReactorServer reactorServer = new ReactorServer();
+        reactorServer.startup();
     }
 
 }

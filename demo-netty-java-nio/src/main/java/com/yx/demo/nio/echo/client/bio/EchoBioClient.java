@@ -31,7 +31,8 @@ public class EchoBioClient {
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
                 out.println(userInput);
-                System.out.println("write to server done");
+
+                // 使用 in.readLine() 读取到 \n就结束（其实是一种拆包的解决方案）
                 System.out.println("echo: " + in.readLine());
             }
         } catch (UnknownHostException e) {

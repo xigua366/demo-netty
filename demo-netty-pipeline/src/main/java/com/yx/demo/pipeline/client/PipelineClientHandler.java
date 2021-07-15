@@ -1,23 +1,11 @@
-package com.yx.demo.echo.client;
+package com.yx.demo.pipeline.client;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
 
-public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
-
-    /**
-     * 完成与服务端连接（操作系统底层完成三次握手）后执行
-     * @param ctx
-     * @throws Exception
-     */
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("Active");
-    }
-
+public class PipelineClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     /**
      * 执行数据读取（数据接收）操作
@@ -28,20 +16,8 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         System.out.println("Client received: " + msg.toString(CharsetUtil.UTF_8));
-
-    }
-
-
-
-
-    /**
-     * 数据读取（数据接收）完成后执行
-     * @param ctx
-     * @throws Exception
-     */
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("EchoClientHandler channelReadComplete");
+        // 客户端收到响应数据之后，一般接着就是执行业务逻辑了，不会再向服务端写数据
+        // TODO
     }
 
     /**
@@ -52,9 +28,7 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
      */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        System.out.println("遇到异常");
         cause.printStackTrace();
-
         // 关闭客户端连接
         ctx.close();
     }

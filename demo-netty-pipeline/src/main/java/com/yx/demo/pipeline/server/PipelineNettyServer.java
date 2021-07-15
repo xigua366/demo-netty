@@ -1,4 +1,4 @@
-package com.yx.demo.echo.server;
+package com.yx.demo.pipeline.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -9,11 +9,11 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
-public class EchoNettyServer {
+public class PipelineNettyServer {
 
     private final int port;
 
-    public EchoNettyServer(int port){
+    public PipelineNettyServer(int port){
         this.port = port;
     }
 
@@ -42,7 +42,19 @@ public class EchoNettyServer {
 
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new EchoServerHandler());
+                            ch.pipeline()
+                                    // OutboundHandler组件是逆序执行
+                                    .addLast(new PipelineServerOutboundHandler01())
+                                    .addLast(new PipelineServerOutboundHandler02())
+
+                                    // InboundHandler组件是顺序执行, 且添加到pipeline中的时候，一般都放到OutboundHandler后面添加
+                                    .addLast(new PipelineServerInboundHandler01())
+                                    .addLast(new PipelineServerInboundHandler02())
+
+
+
+
+                            ;
                         }
                     });
 
@@ -63,11 +75,11 @@ public class EchoNettyServer {
     }
 
     public static void main(String [] args) throws InterruptedException {
-        int port = 8080;
+        int port = 7080;
         if(args.length > 0){
             port = Integer.parseInt(args[0]);
         }
-        new EchoNettyServer(port).run();
+        new PipelineNettyServer(port).run();
     }
 
 }

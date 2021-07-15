@@ -31,6 +31,7 @@
 		<module>demo-netty-http</module>
 		<module>demo-netty-spring</module>
 		<module>demo-netty-rpc</module>
+		<module>demo-netty-pipeline</module>
 		<module>demo-netty-tech</module>
 		<module>demo-nio-spring</module>
 	</modules>

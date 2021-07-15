@@ -1,4 +1,4 @@
-package com.yx.demo.echo.client;
+package com.yx.demo.pipeline.client;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -16,13 +16,13 @@ import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 
-public class EchoNettyClient {
+public class PipelineNettyClient {
 
     private final String host;
 
     private final int port;
 
-    public EchoNettyClient(String host, int port){
+    public PipelineNettyClient(String host, int port){
         this.host = host;
         this.port = port;
     }
@@ -46,7 +46,10 @@ public class EchoNettyClient {
 
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-                            ch.pipeline().addLast(new EchoClientHandler());
+                            ch.pipeline()
+                                    .addLast(new PipelineClientHandler())
+                                    .addLast(new PipelineClientOutboundHandler01())
+                            ;
                         }
                     });
 
@@ -87,7 +90,7 @@ public class EchoNettyClient {
     }
 
     public static void main(String []args) throws Exception {
-        new EchoNettyClient("127.0.0.1",8080).start();
+        new PipelineNettyClient("127.0.0.1",7080).start();
     }
 
 }

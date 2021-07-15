@@ -1,4 +1,4 @@
-package com.yx.demo.nio.echo.client;
+package com.yx.demo.nio.echo.client.nio.select;
 
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -7,7 +7,7 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
-public class EchoNioClient {
+public class SelectEchoNioClient {
 
 	/**
 	 * @param args

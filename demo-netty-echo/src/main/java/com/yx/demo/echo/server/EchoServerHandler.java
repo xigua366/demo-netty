@@ -20,6 +20,9 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
         //第三种
         // ctx.writeAndFlush(Unpooled.copiedBuffer("server ",CharsetUtil.UTF_8));
 
+        // 前两种writeAndFlush会发布事件出来，在整个channel的pipeline中传播
+        // 第三种writeAndFlush只是简单的触发下一个outboundHandler来进行继续工作
+
 
 
         ByteBuf data = (ByteBuf) msg;

@@ -1,4 +1,4 @@
-package com.ruyuan.netty.chapter04.article30.v2;
+package com.ruyuan.netty.chapter04.article32.server;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -33,29 +33,25 @@ public class ServerHandler {
                     (SocketChannel) selectionKey.channel();
 
             // 读取客户端发送的数据
-            readBuffer.clear();
-            socketChannel.read(readBuffer);
-            readBuffer.flip();
-
-            byte[] recvBytes = new byte[readBuffer.limit()];
-            readBuffer.get(recvBytes);
-
-            // 打印客户端发送的数据
-            System.out.println("客户端发送：" +
-                    new String(recvBytes));
+            for(int i = 0; i < 10; i++) {
+                readBuffer.clear();
+                socketChannel.read(readBuffer);
+                // 打印客户端发送的数据
+                System.out.println("客户端发送：" +
+                        new String(readBuffer.array()));
+            }
 
             // 睡眠2秒模拟存储数据
             Thread.sleep(2000);
 
             // 移除读事件并监听写事件
-            selectionKey.interestOps(
-                    selectionKey.interestOps()
-                            & ~SelectionKey.OP_READ
-                            | SelectionKey.OP_WRITE);
+            // selectionKey.interestOps(
+            //        selectionKey.interestOps()
+            //                & ~SelectionKey.OP_READ
+            //                | SelectionKey.OP_WRITE);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     /**

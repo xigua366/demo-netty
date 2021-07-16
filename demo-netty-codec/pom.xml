@@ -11,8 +11,8 @@
 		<relativePath>../../demo-netty</relativePath>
 	</parent>
 
-	<!-- 总结netty中的pipeline与ChannelHandler知识 -->
-	<artifactId>demo-netty-pipeline</artifactId>
+	<!-- 总结netty中的编解码知识 -->
+	<artifactId>demo-netty-codec</artifactId>
 
 	<dependencies>
 		<dependency>
@@ -28,6 +28,13 @@
 			<version>1.18.16</version>
 			<optional>true</optional>
 		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.76</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

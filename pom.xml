@@ -32,6 +32,8 @@
 		<module>demo-netty-spring</module>
 		<module>demo-netty-rpc</module>
 		<module>demo-netty-pipeline</module>
+		<module>demo-netty-codec</module>
+		<module>demo-netty-bytebuf</module>
 		<module>demo-netty-tech</module>
 		<module>demo-nio-spring</module>
 	</modules>

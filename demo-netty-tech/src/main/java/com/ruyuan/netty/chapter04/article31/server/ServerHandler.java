@@ -35,10 +35,12 @@ public class ServerHandler {
             // 读取客户端发送的数据
             readBuffer.clear();
             socketChannel.read(readBuffer);
-
+            readBuffer.flip();
             // 打印客户端发送的数据
+            byte[] recvBytes = new byte[readBuffer.limit()];
+            readBuffer.get(recvBytes);
             System.out.println("客户端发送：" +
-                    new String(readBuffer.array()));
+                    new String(recvBytes));
 
             // 睡眠2秒模拟存储数据
             Thread.sleep(2000);

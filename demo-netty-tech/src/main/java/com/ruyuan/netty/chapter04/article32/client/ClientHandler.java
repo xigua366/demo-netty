@@ -1,4 +1,4 @@
-package com.ruyuan.netty.chapter04.article31.client;
+package com.ruyuan.netty.chapter04.article32.client;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -35,14 +35,10 @@ public class ClientHandler {
             // 读取服务端发送的数据
             readBuffer.clear();
             socketChannel.read(readBuffer);
-            readBuffer.flip();
-
-            byte[] recvBytes = new byte[readBuffer.limit()];
-            readBuffer.get(recvBytes);
 
             // 打印服务端响应的数据
             System.out.println("服务端响应：" +
-                    new String(recvBytes));
+                    new String(readBuffer.array()));
 
             // 移除读事件并监听写事件
             selectionKey.interestOps(
@@ -63,15 +59,15 @@ public class ClientHandler {
             SocketChannel socketChannel =
                     (SocketChannel) selectionKey.channel();
 
-            for(int i = 0; i < 10; i++) {
+            for(int i = 0; i <= 10; i++) {
                 // 向服务端发送hello world
                 writeBuffer.clear();
                 writeBuffer.put("hello world".getBytes());
                 writeBuffer.flip();
                 socketChannel.write(writeBuffer);
 
-                // 每发送一个报文就睡眠1s
-                Thread.sleep(1000);
+                // 每发送一个报文就睡眠100ms
+                Thread.sleep(100);
             }
 
             // 移除写事件并监听读事件

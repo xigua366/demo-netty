@@ -35,10 +35,14 @@ public class ClientHandler {
             // 读取服务端发送的数据
             readBuffer.clear();
             socketChannel.read(readBuffer);
+            readBuffer.flip();
+
+            byte[] recvBytes = new byte[readBuffer.limit()];
+            readBuffer.get(recvBytes);
 
             // 打印服务端响应的数据
             System.out.println("服务端响应：" +
-                    new String(readBuffer.array()));
+                    new String(recvBytes));
 
             // 移除读事件并监听写事件
             selectionKey.interestOps(

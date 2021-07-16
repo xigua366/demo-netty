@@ -11,8 +11,8 @@
 		<relativePath>../../demo-netty</relativePath>
 	</parent>
 
-	<!-- 总结netty中的pipeline与ChannelHandler知识 -->
-	<artifactId>demo-netty-pipeline</artifactId>
+	<!-- 总结netty中的ByteBuf知识 -->
+	<artifactId>demo-netty-bytebuf</artifactId>
 
 	<dependencies>
 		<dependency>

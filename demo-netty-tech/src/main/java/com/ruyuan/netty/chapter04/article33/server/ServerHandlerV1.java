@@ -1,4 +1,4 @@
-package com.ruyuan.netty.chapter04.article32.server;
+package com.ruyuan.netty.chapter04.article33.server;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -7,8 +7,11 @@ import java.nio.channels.SocketChannel;
 /**
  * NIO服务端Reactor模型Handler组件
  * 处理与客户端的读写请求
+ *
+ * V1 版本，用于解决粘包问题，但没有解决拆包问题
+ *
  */
-public class ServerHandler {
+public class ServerHandlerV1 {
 
     private final SelectionKey selectionKey;
 
@@ -20,7 +23,7 @@ public class ServerHandler {
     private final ByteBuffer writeBuffer =
             ByteBuffer.allocate(2048);
 
-    public ServerHandler(SelectionKey selectionKey) {
+    public ServerHandlerV1(SelectionKey selectionKey) {
         this.selectionKey = selectionKey;
     }
 
@@ -56,6 +59,22 @@ public class ServerHandler {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * byte[]转int
+     *
+     * @param bytes
+     * @return
+     */
+    public static int byteArrayToInt(byte[] bytes) {
+        int value = 0;
+        // 由高位到低位
+        for (int i = 0; i < 4; i++) {
+            int shift = (4 - 1 - i) * 8;
+            value += (bytes[i] & 0x000000FF) << shift;// 往高位游
+        }
+        return value;
     }
 
     /**

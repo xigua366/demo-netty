@@ -1,4 +1,4 @@
-package com.ruyuan.netty.chapter04.article32.client;
+package com.ruyuan.netty.chapter04.article33.client;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;

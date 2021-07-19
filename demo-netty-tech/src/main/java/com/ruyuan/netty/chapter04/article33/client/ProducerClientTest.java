@@ -1,4 +1,4 @@
-package com.ruyuan.netty.chapter04.article32.client;
+package com.ruyuan.netty.chapter04.article33.client;
 
 /**
  * 简版消息中间件Producer客户端启动入口

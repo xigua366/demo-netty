@@ -1,4 +1,4 @@
-package com.ruyuan.netty.chapter04.article32.server;
+package com.ruyuan.netty.chapter04.article33.server;
 
 /**
  * 简版消息中间件Broker服务端启动入口

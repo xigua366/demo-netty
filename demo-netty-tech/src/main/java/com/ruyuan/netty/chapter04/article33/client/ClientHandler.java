@@ -1,10 +1,8 @@
-package com.ruyuan.netty.chapter04.article32.client;
+package com.ruyuan.netty.chapter04.article33.client;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.nio.charset.StandardCharsets;
-import java.util.Random;
 
 /**
  * NIO客户端Reactor模型Handler组件
@@ -61,7 +59,7 @@ public class ClientHandler {
             SocketChannel socketChannel =
                     (SocketChannel) selectionKey.channel();
 
-            for(int i = 0; i < 10; i++) {
+            for(int i = 0; i < 1000; i++) {
                 writeBuffer.clear();
                 // 消息格式
                 /*

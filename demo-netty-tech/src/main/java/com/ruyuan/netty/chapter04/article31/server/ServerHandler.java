@@ -24,6 +24,9 @@ public class ServerHandler {
         this.selectionKey = selectionKey;
     }
 
+    // 服务端从socket中读取数据的次数
+    public int readCount;
+
     /**
      * 读取客户端请求数据
      */
@@ -41,6 +44,7 @@ public class ServerHandler {
             readBuffer.get(recvBytes);
             System.out.println("客户端发送：" +
                     new String(recvBytes));
+            System.out.println("读取数据次数：" + ++readCount);
 
             // 睡眠2秒模拟存储数据
             Thread.sleep(2000);

@@ -33,16 +33,20 @@ public class ServerHandler {
                     (SocketChannel) selectionKey.channel();
 
             // 读取客户端发送的数据
-            for(int i = 0; i < 10; i++) {
-                readBuffer.clear();
-                socketChannel.read(readBuffer);
-                // 打印客户端发送的数据
-                System.out.println("客户端发送：" +
-                        new String(readBuffer.array()));
-            }
+            readBuffer.clear();
+            socketChannel.read(readBuffer);
+            readBuffer.flip();
 
-            // 睡眠2秒模拟存储数据
-            Thread.sleep(2000);
+            while (readBuffer.hasRemaining()) {
+                // 先读取4个字节的消息头
+                int length = readBuffer.getInt();
+                // 再读取消息体内容
+                byte[] contentBytes = new byte[length];
+                readBuffer.get(contentBytes);
+                System.out.println("消息头Length=" + length +
+                        "， 消息体Content="
+                        + new String(contentBytes));
+            }
 
             // 移除读事件并监听写事件
             // selectionKey.interestOps(

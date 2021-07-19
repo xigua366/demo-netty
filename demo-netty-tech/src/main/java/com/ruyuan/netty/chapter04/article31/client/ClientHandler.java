@@ -63,15 +63,12 @@ public class ClientHandler {
             SocketChannel socketChannel =
                     (SocketChannel) selectionKey.channel();
 
-            for(int i = 0; i < 10; i++) {
+            for(int i = 0; i < 1000; i++) {
                 // 向服务端发送hello world
                 writeBuffer.clear();
-                writeBuffer.put("hello world".getBytes());
+                writeBuffer.put("hello world \n".getBytes());
                 writeBuffer.flip();
                 socketChannel.write(writeBuffer);
-
-                // 每发送一个报文就睡眠1s
-                Thread.sleep(1000);
             }
 
             // 移除写事件并监听读事件

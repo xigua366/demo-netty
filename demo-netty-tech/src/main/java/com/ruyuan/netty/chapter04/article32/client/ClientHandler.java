@@ -3,6 +3,8 @@ package com.ruyuan.netty.chapter04.article32.client;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
+import java.util.Random;
 
 /**
  * NIO客户端Reactor模型Handler组件
@@ -59,15 +61,21 @@ public class ClientHandler {
             SocketChannel socketChannel =
                     (SocketChannel) selectionKey.channel();
 
-            for(int i = 0; i <= 10; i++) {
-                // 向服务端发送hello world
+            for(int i = 0; i < 10; i++) {
                 writeBuffer.clear();
-                writeBuffer.put("hello world".getBytes());
+                // 消息格式
+                /*
+                +-------------------------------------+
+                | 数据长度 4byte | 数据内容 （长度不定）   |
+                +-------------------------------------+
+                */
+                String data = "hello world" + i;
+                byte[] msgBody = data.getBytes();
+                int msgLen = msgBody.length;
+                writeBuffer.putInt(msgLen); // 消息头
+                writeBuffer.put(msgBody); // 消息体
                 writeBuffer.flip();
                 socketChannel.write(writeBuffer);
-
-                // 每发送一个报文就睡眠100ms
-                Thread.sleep(100);
             }
 
             // 移除写事件并监听读事件

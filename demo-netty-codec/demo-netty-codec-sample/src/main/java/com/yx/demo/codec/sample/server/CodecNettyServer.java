@@ -49,7 +49,7 @@ public class CodecNettyServer {
                                     //.addLast(new LineBasedFrameDecoder(1024)) // 基于 \n换行符的解码器
                                     //.addLast(new FixedLengthFrameDecoder(10))  // 固定长度解码器
                                     //.addLast(new DelimiterBasedFrameDecoder(1024, true, false, delimiter))    // 指定消息分隔符的解码器
-                                    .addLast(new LengthFieldBasedFrameDecoder(1024, 0, 4, 0, 0)) // message = header+body, 基于长度解码的通用解码器  官方文档：https://netty.io/4.0/api/io/netty/handler/codec/LengthFieldBasedFrameDecoder.html
+                                    .addLast(new LengthFieldBasedFrameDecoder(1024, 0, 4, 0, 4)) // message = header+body, 基于长度解码的通用解码器  官方文档：https://netty.io/4.0/api/io/netty/handler/codec/LengthFieldBasedFrameDecoder.html
                                     .addLast(new StringDecoder())
                                     .addLast(new CodecServerHandler())
 

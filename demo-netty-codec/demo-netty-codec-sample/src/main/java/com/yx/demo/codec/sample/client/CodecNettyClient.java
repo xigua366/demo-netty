@@ -72,7 +72,7 @@ public class CodecNettyClient {
 //                            " It greatly simplifies and streamlines&_" +
 //                            "network programming such as TCP and UDP socket server.&_";
 
-                    inputStr = "hello world";
+                    inputStr = "hello world是把";
                     byte[] content = inputStr.getBytes();
                     byteBuffer.clear();
                     byteBuffer.putInt(content.length); // 长度字段占用4个字节

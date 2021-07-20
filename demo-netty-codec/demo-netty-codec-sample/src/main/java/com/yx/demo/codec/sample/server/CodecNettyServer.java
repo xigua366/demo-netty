@@ -50,6 +50,7 @@ public class CodecNettyServer {
                                     //.addLast(new FixedLengthFrameDecoder(10))  // 固定长度解码器
                                     //.addLast(new DelimiterBasedFrameDecoder(1024, true, false, delimiter))    // 指定消息分隔符的解码器
                                     .addLast(new LengthFieldBasedFrameDecoder(1024, 0, 4, 0, 4)) // message = header+body, 基于长度解码的通用解码器  官方文档：https://netty.io/4.0/api/io/netty/handler/codec/LengthFieldBasedFrameDecoder.html
+                                    // StringDecoder 是把byte[]字节数组转String字符串，一般是一个char字符对应一个byte，如果是一个4个byte int数字，则无法成功转成想要的数字
                                     .addLast(new StringDecoder())
                                     .addLast(new CodecServerHandler())
 

@@ -11,7 +11,7 @@
 		<relativePath>../../demo-netty</relativePath>
 	</parent>
 
-	<artifactId>demo-netty-java-nio</artifactId>
+	<artifactId>demo-java-nio</artifactId>
 
 	<dependencies>
 		<dependency>

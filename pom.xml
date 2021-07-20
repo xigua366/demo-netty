@@ -25,17 +25,19 @@
 	</properties>
 
 	<modules>
-		<module>demo-netty-java-bio</module>
-		<module>demo-netty-java-nio</module>
+		<module>demo-java-bio</module>
+		<module>demo-java-nio</module>
 		<module>demo-netty-echo</module>
 		<module>demo-netty-http</module>
 		<module>demo-netty-spring</module>
+		<module>demo-netty-kafka</module>
 		<module>demo-netty-rpc</module>
 		<module>demo-netty-pipeline</module>
 		<module>demo-netty-codec</module>
 		<module>demo-netty-bytebuf</module>
 		<module>demo-netty-tech</module>
 		<module>demo-nio-spring</module>
+		<module>demo-nio-kafka</module>
 	</modules>
 
 	<dependencyManagement>

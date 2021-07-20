@@ -11,51 +11,13 @@
 		<relativePath>../../demo-netty</relativePath>
 	</parent>
 
-	<!-- 总结netty中的编解码知识 -->
+	<!-- netty整合spring 示例代码 -->
 	<artifactId>demo-netty-codec</artifactId>
+	<packaging>pom</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>4.1.32.Final</version>
-		</dependency>
-
-		<!--lombok依赖包-->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.16</version>
-			<optional>true</optional>
-		</dependency>
-
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-			<version>1.2.76</version>
-		</dependency>
-
-	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>2.3.1.RELEASE</version>
-				<configuration>
-					<includeSystemScope>true</includeSystemScope>
-					<fork>true</fork>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+	<modules>
+		<module>demo-netty-codec-custom</module>
+		<module>demo-netty-codec-sample</module>
+	</modules>
 
 </project>

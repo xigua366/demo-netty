@@ -70,19 +70,19 @@ public class ServerReactor implements Runnable {
             serverAcceptor.accept();
         } else if(key.isReadable()) {
             // 读事件（OP_READ）
-            ServerHandler serverHandler =
-                    (ServerHandler) key.attachment();
+            ServerHandlerV3 serverHandlerV3 =
+                    (ServerHandlerV3) key.attachment();
 
             // 如果消息头与消息体都完整的读取完了，则重新创建一个ServerHandler对象出来
-            if(!serverHandler.getSize().hasRemaining() && serverHandler.getReadBuffer() !=null && !serverHandler.getReadBuffer().hasRemaining()) {
-                serverHandler = new ServerHandler(key);
+            if(!serverHandlerV3.getSize().hasRemaining() && serverHandlerV3.getReadBuffer() !=null && !serverHandlerV3.getReadBuffer().hasRemaining()) {
+                serverHandlerV3 = new ServerHandlerV3(key);
             }
-            serverHandler.read();
+            serverHandlerV3.read();
         } else if(key.isWritable()) {
             // 写事件（OP_WRITE）
-            ServerHandler serverHandler =
-                    (ServerHandler) key.attachment();
-            serverHandler.write();
+            ServerHandlerV3 serverHandlerV3 =
+                    (ServerHandlerV3) key.attachment();
+            serverHandlerV3.write();
         }
     }
 }

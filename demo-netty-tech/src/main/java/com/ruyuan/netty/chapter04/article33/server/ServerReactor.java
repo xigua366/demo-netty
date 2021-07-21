@@ -70,14 +70,14 @@ public class ServerReactor implements Runnable {
             serverAcceptor.accept();
         } else if(key.isReadable()) {
             // 读事件（OP_READ）
-            ServerHandler serverHandler =
-                    (ServerHandler) key.attachment();
-            serverHandler.read();
+            ServerHandlerV2 serverHandlerV2 =
+                    (ServerHandlerV2) key.attachment();
+            serverHandlerV2.read();
         } else if(key.isWritable()) {
             // 写事件（OP_WRITE）
-            ServerHandler serverHandler =
-                    (ServerHandler) key.attachment();
-            serverHandler.write();
+            ServerHandlerV2 serverHandlerV2 =
+                    (ServerHandlerV2) key.attachment();
+            serverHandlerV2.write();
         }
     }
 }

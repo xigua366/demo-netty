@@ -40,9 +40,9 @@ public class ServerAcceptor {
                                 selector, SelectionKey.OP_READ);
 
                 // 后续的读写事件都交给Handler组件去处理
-                ServerHandler serverHandler =
-                        new ServerHandler(selectionKey);
-                selectionKey.attach(serverHandler);
+                ServerHandlerV3 serverHandlerV3 =
+                        new ServerHandlerV3(selectionKey);
+                selectionKey.attach(serverHandlerV3);
             }
         } catch (Exception e) {
             e.printStackTrace();

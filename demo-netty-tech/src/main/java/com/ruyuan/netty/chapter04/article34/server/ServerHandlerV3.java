@@ -7,8 +7,10 @@ import java.nio.channels.SocketChannel;
 /**
  * NIO服务端Reactor模型Handler组件
  * 处理与客户端的读写请求
+ *
+ * V3 版本，同时解决了拆包和粘包问题，不过换了一种实现方案，参考kafka producer组件的做法
  */
-public class ServerHandler {
+public class ServerHandlerV3 {
 
     private SelectionKey selectionKey;
 
@@ -22,7 +24,7 @@ public class ServerHandler {
     // 表示存放消息头的4个字节
     private ByteBuffer size = null;
 
-    public ServerHandler(SelectionKey selectionKey) {
+    public ServerHandlerV3(SelectionKey selectionKey) {
         this.selectionKey = selectionKey;
         this.size = ByteBuffer.allocate(4);
         selectionKey.attach(this);

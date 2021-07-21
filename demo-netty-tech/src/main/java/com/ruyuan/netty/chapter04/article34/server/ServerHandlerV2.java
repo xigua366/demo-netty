@@ -7,6 +7,8 @@ import java.nio.channels.SocketChannel;
 /**
  * NIO服务端Reactor模型Handler组件
  * 处理与客户端的读写请求
+ *
+ * V2 版本，同时解决了拆包和粘包问题
  */
 public class ServerHandlerV2 {
 

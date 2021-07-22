@@ -23,6 +23,9 @@ public class ServerHandlerV1 {
     private final ByteBuffer writeBuffer =
             ByteBuffer.allocate(2048);
 
+    // 服务端从socket中读取数据的次数
+    public int readCount;
+
     public ServerHandlerV1(SelectionKey selectionKey) {
         this.selectionKey = selectionKey;
     }
@@ -50,6 +53,7 @@ public class ServerHandlerV1 {
                         "， 消息体Content="
                         + new String(contentBytes));
             }
+            System.out.println("读取数据次数：" + ++readCount);
 
             // 移除读事件并监听写事件
             // selectionKey.interestOps(

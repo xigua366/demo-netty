@@ -21,6 +21,9 @@ public class ServerHandlerV3 {
     private ByteBuffer writeBuffer =
             ByteBuffer.allocate(2048);
 
+    // 服务端从socket中读取数据的次数
+    public int readCount;
+
     // 表示存放消息头的4个字节
     private ByteBuffer size = null;
 
@@ -46,7 +49,7 @@ public class ServerHandlerV3 {
             SocketChannel socketChannel =
                     (SocketChannel) selectionKey.channel();
 
-            int contentLength = -1;
+            int bodyLen = -1;
 
             if(size.hasRemaining()) {
                 int bytesRead = socketChannel.read(size);
@@ -55,10 +58,10 @@ public class ServerHandlerV3 {
                     // 表示size中的4个字节已经读满了
                     size.rewind();
                     // 取出消息头长度
-                    contentLength = size.getInt();
+                    bodyLen = size.getInt();
 
-                    if(contentLength > 0) {
-                        readBuffer = ByteBuffer.allocate(contentLength);
+                    if(bodyLen > 0) {
+                        readBuffer = ByteBuffer.allocate(bodyLen);
                     }
                 } else {
                     // 表示消息头被拆包了
@@ -70,13 +73,15 @@ public class ServerHandlerV3 {
                 socketChannel.read(readBuffer);
                 if(!readBuffer.hasRemaining()) {
                     // 表示消息体内容读取完了
-                    System.out.println("客户端发送："
+                    System.out.println("消息头Length=" + bodyLen +
+                            "， 消息体Content="
                             + new String(readBuffer.array()));
                 } else {
                     // 表示消息体内容被拆包了
                     // 需要退出read方法，通过while(true)循环重新进来继续读
                 }
             }
+            System.out.println("读取数据次数：" + ++readCount);
 
             // 移除读事件并监听写事件
             // selectionKey.interestOps(

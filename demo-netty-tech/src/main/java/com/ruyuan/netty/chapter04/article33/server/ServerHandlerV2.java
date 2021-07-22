@@ -22,6 +22,9 @@ public class ServerHandlerV2 {
     private final ByteBuffer writeBuffer =
             ByteBuffer.allocate(2048);
 
+    // 服务端从socket中读取数据的次数
+    public int readCount;
+
     public ServerHandlerV2(SelectionKey selectionKey) {
         this.selectionKey = selectionKey;
     }
@@ -79,10 +82,12 @@ public class ServerHandlerV2 {
                         byte[] bodyByte = new byte[bodyLen];
                         readBuffer.get(bodyByte,
                                 0, bodyLen);
-                        bodyLen = -1;
                         // 完整读到一个消息，打印结果
-                        System.out.println("客户端发送："
+                        System.out.println("消息头Length=" + bodyLen +
+                                "， 消息体Content="
                                 + new String(bodyByte));
+                        bodyLen = -1;
+
                     // 消息体被拆包，先缓存读到的数据
                     } else {
                         readBuffer.reset();
@@ -93,6 +98,7 @@ public class ServerHandlerV2 {
                     }
                 }
             }
+            System.out.println("读取数据次数：" + ++readCount);
 
             // 移除读事件并监听写事件
             // selectionKey.interestOps(

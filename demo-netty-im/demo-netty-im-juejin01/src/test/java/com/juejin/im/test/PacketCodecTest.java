@@ -1,7 +1,7 @@
 package com.juejin.im.test;
 
 import com.juejin.im.common.protocol.Packet;
-import com.juejin.im.common.protocol.PacketCodec;
+import com.juejin.im.common.utils.PacketCodec;
 import com.juejin.im.common.serialize.impl.JSONSerializer;
 import com.juejin.im.common.serialize.Serializer;
 import com.juejin.im.common.protocol.request.LoginRequestPacket;
@@ -26,7 +26,8 @@ public class PacketCodecTest {
         loginRequestPacket.setPassword("password");
 
         PacketCodec packetCodeC = PacketCodec.INSTANCE;
-        ByteBuf byteBuf = packetCodeC.encode(ByteBufAllocator.DEFAULT, loginRequestPacket);
+        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.buffer();
+        byteBuf = packetCodeC.encode(byteBuf, loginRequestPacket);
         Packet decodedPacket = packetCodeC.decode(byteBuf);
 
         Assert.assertArrayEquals(serializer.serialize(loginRequestPacket), serializer.serialize(decodedPacket));

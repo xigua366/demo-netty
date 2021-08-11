@@ -1,15 +1,16 @@
 package com.juejin.im.client;
 
 import com.juejin.im.client.handler.ClientHandler;
-import com.juejin.im.common.protocol.PacketCodec;
+import com.juejin.im.client.handler.LoginResponseHandler;
+import com.juejin.im.client.handler.MessageResponseHandler;
+import com.juejin.im.common.codec.PacketDecoder;
+import com.juejin.im.common.codec.PacketEncoder;
+import com.juejin.im.common.utils.PacketCodec;
 import com.juejin.im.common.protocol.request.MessageRequestPacket;
 import com.juejin.im.common.utils.LoginUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -46,7 +47,15 @@ public class NettyClient {
                     @Override
                     public void initChannel(SocketChannel ch) {
                         // ch.pipeline().addLast(new FirstClientHandler());
-                        ch.pipeline().addLast(new ClientHandler());
+                        // ch.pipeline().addLast(new ClientHandler());
+                        ChannelPipeline pipeline = ch.pipeline();
+
+                        pipeline.addLast(new PacketDecoder());
+                        pipeline.addLast(new LoginResponseHandler());
+                        pipeline.addLast(new MessageResponseHandler());
+                        pipeline.addLast(new PacketEncoder());
+                        pipeline.addLast(new ClientHandler());
+
                     }
                 });
 
@@ -100,7 +109,8 @@ public class NettyClient {
 
                     MessageRequestPacket packet = new MessageRequestPacket();
                     packet.setMessage(line);
-                    ByteBuf byteBuf = PacketCodec.INSTANCE.encode(channel.alloc(), packet);
+                    ByteBuf byteBuf = channel.alloc().buffer();
+                    byteBuf = PacketCodec.INSTANCE.encode(byteBuf, packet);
                     channel.writeAndFlush(byteBuf);
                 }
             }

@@ -1,5 +1,6 @@
-package com.juejin.im.common.protocol;
+package com.juejin.im.common.utils;
 
+import com.juejin.im.common.protocol.Packet;
 import com.juejin.im.common.protocol.request.MessageRequestPacket;
 import com.juejin.im.common.protocol.response.LoginResponsePacket;
 import com.juejin.im.common.protocol.response.MessageResponsePacket;
@@ -7,7 +8,6 @@ import com.juejin.im.common.serialize.impl.JSONSerializer;
 import com.juejin.im.common.serialize.Serializer;
 import com.juejin.im.common.protocol.request.LoginRequestPacket;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,13 +58,12 @@ public class PacketCodec {
      * @param packet
      * @return
      */
-    public ByteBuf encode(ByteBufAllocator byteBufAllocator, Packet packet) {
-        // 1. 创建 ByteBuf 对象
-        ByteBuf byteBuf = byteBufAllocator.ioBuffer();
-        // 2. 序列化 java 对象
+    public ByteBuf encode(ByteBuf byteBuf, Packet packet) {
+
+        // 序列化 java 对象
         byte[] bytes = Serializer.DEFAULT.serialize(packet);
 
-        // 3. 实际编码过程
+        // 实际编码过程
 
         /*
         +---------------------------------------------------------------------+

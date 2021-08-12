@@ -2,6 +2,7 @@ package com.juejin.im.server.handler;
 
 import com.juejin.im.common.protocol.request.LoginRequestPacket;
 import com.juejin.im.common.protocol.response.LoginResponsePacket;
+import com.juejin.im.common.utils.LoginUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -21,12 +22,15 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         // 登录校验
         if (valid(loginRequestPacket)) {
             loginResponsePacket.setSuccess(true);
+
+            // 标注一下当前Channel为已登录成功
+            LoginUtil.markAsLogin(ctx.channel());
         } else {
             loginResponsePacket.setReason("账号密码校验失败");
             loginResponsePacket.setSuccess(false);
         }
 
-        // 输出响应
+        // 输出响应 (这里用了ctx.channel()进行响应输出，表示不会继续走后续的ChannelInboundHandler了，直接去到ChannelOutboundHandler)
         ctx.channel().writeAndFlush(loginResponsePacket);
     }
 

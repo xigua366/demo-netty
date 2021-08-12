@@ -2,8 +2,10 @@ package com.juejin.im.server;
 
 import com.juejin.im.common.codec.PacketDecoder;
 import com.juejin.im.common.codec.PacketEncoder;
+import com.juejin.im.server.handler.AuthHandler;
 import com.juejin.im.server.handler.LoginRequestHandler;
 import com.juejin.im.server.handler.MessageRequestHandler;
+import com.juejin.im.server.handler.Spliter;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -44,8 +46,10 @@ public class NettyServer {
                         // ch.pipeline().addLast(new ServerHandler());
                         ChannelPipeline pipeline = ch.pipeline();
 
+                        pipeline.addLast(new Spliter());
                         pipeline.addLast(new PacketDecoder());
                         pipeline.addLast(new LoginRequestHandler());
+                        pipeline.addLast(new AuthHandler());
                         pipeline.addLast(new MessageRequestHandler());
                         pipeline.addLast(new PacketEncoder());
                     }

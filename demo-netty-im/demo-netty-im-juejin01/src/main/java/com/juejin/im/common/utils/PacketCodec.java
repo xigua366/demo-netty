@@ -27,7 +27,7 @@ import static com.juejin.im.common.protocol.command.Command.*;
  */
 public class PacketCodec {
 
-    private static final int MAGIC_NUMBER = 0x12345678;
+    public static final int MAGIC_NUMBER = 0x12345678;
 
     // 恶汉单例模式
     public static final PacketCodec INSTANCE = new PacketCodec();

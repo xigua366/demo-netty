@@ -7,7 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
 /**
- * 编码器 用于解决拆包粘包
+ * 编码器 将Packet对象转换成字节数组
  */
 public class PacketEncoder extends MessageToByteEncoder<Packet> {
 

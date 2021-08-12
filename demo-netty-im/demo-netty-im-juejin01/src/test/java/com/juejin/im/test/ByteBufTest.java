@@ -3,6 +3,9 @@ package com.juejin.im.test;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
+/**
+ * 参考文档：https://juejin.cn/book/6844733738119593991/section/6844733738274799624
+ */
 public class ByteBufTest {
 
     public static void main(String[] args) {
@@ -48,9 +51,13 @@ public class ByteBufTest {
         System.out.println("after ===========" + action + "============");
         System.out.println("capacity(): " + buffer.capacity());
         System.out.println("maxCapacity(): " + buffer.maxCapacity());
+
+        // 表示返回当前的读指针
         System.out.println("readerIndex(): " + buffer.readerIndex());
         System.out.println("readableBytes(): " + buffer.readableBytes());
         System.out.println("isReadable(): " + buffer.isReadable());
+
+        // 表示返回当前的写指针
         System.out.println("writerIndex(): " + buffer.writerIndex());
         System.out.println("writableBytes(): " + buffer.writableBytes());
         System.out.println("isWritable(): " + buffer.isWritable());

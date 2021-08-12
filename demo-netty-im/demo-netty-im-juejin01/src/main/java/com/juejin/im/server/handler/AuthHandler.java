@@ -1,7 +1,7 @@
 package com.juejin.im.server.handler;
 
 import com.juejin.im.common.protocol.response.MessageResponsePacket;
-import com.juejin.im.common.utils.LoginUtil;
+import com.juejin.im.common.utils.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -12,7 +12,7 @@ public class AuthHandler extends ChannelInboundHandlerAdapter {
 
     @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-            if (!LoginUtil.hasLogin(ctx.channel())) {
+            if (!SessionUtil.hasLogin(ctx.channel())) {
                 // ctx.channel().close();
                 // 用户未登录
                 MessageResponsePacket messageResponsePacket = new MessageResponsePacket();

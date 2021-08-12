@@ -21,4 +21,10 @@ public class Spliter extends LengthFieldBasedFrameDecoder {
     public Spliter() {
         super(Integer.MAX_VALUE, LENGTH_FIELD_OFFSET, LENGTH_FIELD_LENGTH);
     }
+
+
+//    @Override
+//    protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
+//        return super.decode(ctx, in);
+//    }
 }

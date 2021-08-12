@@ -1,15 +1,13 @@
 package com.juejin.im.client;
 
-import com.juejin.im.client.handler.ClientHandler;
 import com.juejin.im.client.handler.LoginResponseHandler;
 import com.juejin.im.client.handler.MessageResponseHandler;
 import com.juejin.im.common.codec.PacketDecoder;
 import com.juejin.im.common.codec.PacketEncoder;
-import com.juejin.im.common.utils.PacketCodec;
+import com.juejin.im.common.protocol.request.LoginRequestPacket;
 import com.juejin.im.common.protocol.request.MessageRequestPacket;
-import com.juejin.im.common.utils.LoginUtil;
+import com.juejin.im.common.utils.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -46,15 +44,12 @@ public class NettyClient {
 
                     @Override
                     public void initChannel(SocketChannel ch) {
-                        // ch.pipeline().addLast(new FirstClientHandler());
-                        // ch.pipeline().addLast(new ClientHandler());
                         ChannelPipeline pipeline = ch.pipeline();
 
                         pipeline.addLast(new PacketDecoder());
                         pipeline.addLast(new LoginResponseHandler());
                         pipeline.addLast(new MessageResponseHandler());
                         pipeline.addLast(new PacketEncoder());
-                        pipeline.addLast(new ClientHandler());
 
                     }
                 });
@@ -95,25 +90,44 @@ public class NettyClient {
         return channelFuture;
     }
 
-    /**
-     * 单独启动一个线层，用于接收控制台输入
-     * @param channel
-     */
     private static void startConsoleThread(Channel channel) {
+        Scanner sc = new Scanner(System.in);
+        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+
         new Thread(() -> {
             while (!Thread.interrupted()) {
-                if (LoginUtil.hasLogin(channel)) {
-                    System.out.println("输入消息发送至服务端: ");
-                    Scanner sc = new Scanner(System.in);
-                    String line = sc.nextLine();
+                if (!SessionUtil.hasLogin(channel)) {
+                    System.out.print("输入用户名登录: ");
+                    String username = sc.nextLine();
+                    loginRequestPacket.setUsername(username);
 
-                    MessageRequestPacket packet = new MessageRequestPacket();
-                    packet.setMessage(line);
-                    ByteBuf byteBuf = channel.alloc().buffer();
-                    byteBuf = PacketCodec.INSTANCE.encode(byteBuf, packet);
-                    channel.writeAndFlush(byteBuf);
+                    // 密码使用默认的
+                    loginRequestPacket.setPassword("pwd");
+
+                    // 发送登录数据包
+                    channel.writeAndFlush(loginRequestPacket);
+                    waitForLoginResponse();
+                } else {
+
+                    // next 与 next 之间的值用空格分开
+                    String toUserId = sc.next();
+                    String message = sc.next();
+
+                    MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
+                    messageRequestPacket.setToUserId(toUserId);
+                    messageRequestPacket.setMessage(message);
+                    channel.writeAndFlush(messageRequestPacket);
                 }
             }
         }).start();
     }
+
+    private static void waitForLoginResponse() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ignored) {
+
+        }
+    }
+
 }

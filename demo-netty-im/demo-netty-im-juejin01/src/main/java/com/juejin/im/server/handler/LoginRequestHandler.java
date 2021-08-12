@@ -2,9 +2,12 @@ package com.juejin.im.server.handler;
 
 import com.juejin.im.common.protocol.request.LoginRequestPacket;
 import com.juejin.im.common.protocol.response.LoginResponsePacket;
-import com.juejin.im.common.utils.LoginUtil;
+import com.juejin.im.common.session.Session;
+import com.juejin.im.common.utils.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+
+import java.util.UUID;
 
 /**
  * 处理登录请求的handler
@@ -24,7 +27,15 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             loginResponsePacket.setSuccess(true);
 
             // 标注一下当前Channel为已登录成功
-            LoginUtil.markAsLogin(ctx.channel());
+            Session session = new Session();
+            String userId = randomUserId();
+            String username = loginRequestPacket.getUsername();
+            session.setUserId(userId);
+            session.setUsername(username);
+            SessionUtil.bindSession(session, ctx.channel());
+
+            loginResponsePacket.setUserId(userId);
+            loginResponsePacket.setUsername(username);
         } else {
             loginResponsePacket.setReason("账号密码校验失败");
             loginResponsePacket.setSuccess(false);
@@ -36,8 +47,12 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
     private boolean valid(LoginRequestPacket loginRequestPacket) {
 
-        System.out.println("userId：" + loginRequestPacket.getUserId() + ", 账号：" + loginRequestPacket.getUsername() + ", 密码：" + loginRequestPacket.getPassword());
+        System.out.println("账号：" + loginRequestPacket.getUsername() + ", 密码：" + loginRequestPacket.getPassword());
 
         return true;
+    }
+
+    private static String randomUserId() {
+        return UUID.randomUUID().toString().split("-")[0];
     }
 }

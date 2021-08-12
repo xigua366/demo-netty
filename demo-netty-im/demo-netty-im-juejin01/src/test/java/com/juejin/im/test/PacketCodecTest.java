@@ -10,8 +10,6 @@ import io.netty.buffer.ByteBufAllocator;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.UUID;
-
 public class PacketCodecTest {
 
     @Test
@@ -21,7 +19,6 @@ public class PacketCodecTest {
         LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
 
         loginRequestPacket.setVersion(((byte) 1));
-        loginRequestPacket.setUserId(UUID.randomUUID().toString());
         loginRequestPacket.setUsername("zhangsan");
         loginRequestPacket.setPassword("password");
 

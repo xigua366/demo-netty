@@ -16,6 +16,9 @@ import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+/**
+ * Producer客户端组件
+ */
 public class ProducerClient {
 
   public static void main(String []args) throws Exception {

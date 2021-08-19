@@ -5,6 +5,9 @@ import io.netty.channel.Channel;
 
 import java.util.Scanner;
 
+/**
+ * 退出登录命令
+ */
 public class LogoutConsoleCommand implements ConsoleCommand {
 
     @Override

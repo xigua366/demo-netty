@@ -2,10 +2,7 @@ package com.juejin.im.client;
 
 import com.juejin.im.client.console.ConsoleCommandManager;
 import com.juejin.im.client.console.LoginConsoleCommand;
-import com.juejin.im.client.handler.CreateGroupResponseHandler;
-import com.juejin.im.client.handler.LoginResponseHandler;
-import com.juejin.im.client.handler.LogoutResponseHandler;
-import com.juejin.im.client.handler.MessageResponseHandler;
+import com.juejin.im.client.handler.*;
 import com.juejin.im.common.codec.PacketDecoder;
 import com.juejin.im.common.codec.PacketEncoder;
 import com.juejin.im.common.utils.SessionUtil;
@@ -55,6 +52,12 @@ public class NettyClient {
                         pipeline.addLast(new MessageResponseHandler());
                         // 创建群聊响应
                         pipeline.addLast(new CreateGroupResponseHandler());
+                        // 加群响应处理器
+                        pipeline.addLast(new JoinGroupResponseHandler());
+                        // 退群响应处理器
+                        pipeline.addLast(new QuitGroupResponseHandler());
+                        // 获取群成员响应处理器
+                        pipeline.addLast(new ListGroupMembersResponseHandler());
                         // 退出登录响应
                         pipeline.addLast(new LogoutResponseHandler());
                         // 对请求消息进行编码

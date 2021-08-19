@@ -1,16 +1,10 @@
 package com.juejin.im.common.utils;
 
 import com.juejin.im.common.protocol.Packet;
-import com.juejin.im.common.protocol.request.CreateGroupRequestPacket;
-import com.juejin.im.common.protocol.request.LogoutRequestPacket;
-import com.juejin.im.common.protocol.request.MessageRequestPacket;
-import com.juejin.im.common.protocol.response.CreateGroupResponsePacket;
-import com.juejin.im.common.protocol.response.LoginResponsePacket;
-import com.juejin.im.common.protocol.response.LogoutResponsePacket;
-import com.juejin.im.common.protocol.response.MessageResponsePacket;
+import com.juejin.im.common.protocol.request.*;
+import com.juejin.im.common.protocol.response.*;
 import com.juejin.im.common.serialize.impl.JSONSerializer;
 import com.juejin.im.common.serialize.Serializer;
-import com.juejin.im.common.protocol.request.LoginRequestPacket;
 import io.netty.buffer.ByteBuf;
 
 import java.util.HashMap;
@@ -55,6 +49,13 @@ public class PacketCodec {
         packetTypeMap.put(LOGOUT_RESPONSE, LogoutResponsePacket.class);
         packetTypeMap.put(CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
         packetTypeMap.put(CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
+        packetTypeMap.put(LIST_GROUP_MEMBERS_REQUEST, ListGroupMembersRequestPacket.class);
+        packetTypeMap.put(LIST_GROUP_MEMBERS_RESPONSE, ListGroupMembersResponsePacket.class);
+        packetTypeMap.put(JOIN_GROUP_REQUEST, JoinGroupRequestPacket.class);
+        packetTypeMap.put(JOIN_GROUP_RESPONSE, JoinGroupResponsePacket.class);
+        packetTypeMap.put(QUIT_GROUP_REQUEST, QuitGroupRequestPacket.class);
+        packetTypeMap.put(QUIT_GROUP_RESPONSE, QuitGroupResponsePacket.class);
+
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();

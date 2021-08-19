@@ -5,6 +5,9 @@ import io.netty.channel.Channel;
 
 import java.util.Scanner;
 
+/**
+ * 发送普通聊天消息命令
+ */
 public class SendToUserConsoleCommand implements ConsoleCommand {
 
     @Override

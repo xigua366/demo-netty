@@ -51,6 +51,12 @@ public class NettyServer {
                         pipeline.addLast(new MessageRequestHandler());
                         // 创建群聊请求
                         pipeline.addLast(new CreateGroupRequestHandler());
+                        // 加群请求处理器
+                        pipeline.addLast(new JoinGroupRequestHandler());
+                        // 退群请求处理器
+                        pipeline.addLast(new QuitGroupRequestHandler());
+                        // 获取群成员请求处理器
+                        pipeline.addLast(new ListGroupMembersRequestHandler());
                         // 退出登录请求
                         pipeline.addLast(new LogoutRequestHandler());
                         // 对响应消息进行编码

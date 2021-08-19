@@ -2,10 +2,7 @@ package com.juejin.im.server;
 
 import com.juejin.im.common.codec.PacketDecoder;
 import com.juejin.im.common.codec.PacketEncoder;
-import com.juejin.im.server.handler.AuthHandler;
-import com.juejin.im.server.handler.LoginRequestHandler;
-import com.juejin.im.server.handler.MessageRequestHandler;
-import com.juejin.im.server.handler.Spliter;
+import com.juejin.im.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -46,9 +43,17 @@ public class NettyServer {
 
                         pipeline.addLast(new Spliter());
                         pipeline.addLast(new PacketDecoder());
+                        // 登录请求
                         pipeline.addLast(new LoginRequestHandler());
+                        // 认证鉴权
                         pipeline.addLast(new AuthHandler());
+                        // 发送普通聊天消息
                         pipeline.addLast(new MessageRequestHandler());
+                        // 创建群聊请求
+                        pipeline.addLast(new CreateGroupRequestHandler());
+                        // 退出登录请求
+                        pipeline.addLast(new LogoutRequestHandler());
+                        // 对响应消息进行编码
                         pipeline.addLast(new PacketEncoder());
                     }
                 });

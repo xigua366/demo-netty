@@ -13,10 +13,12 @@ public class AuthHandler extends ChannelInboundHandlerAdapter {
     @Override
         public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
             if (!SessionUtil.hasLogin(ctx.channel())) {
+                // 直接关闭连接
                 // ctx.channel().close();
+
                 // 用户未登录
                 MessageResponsePacket messageResponsePacket = new MessageResponsePacket();
-                messageResponsePacket.setMessage("服务端回复【用户未登录】");
+                messageResponsePacket.setMessage("服务端回复【用户未登录，请先登录】");
 
                 // 输出响应
                 ctx.channel().writeAndFlush(messageResponsePacket);

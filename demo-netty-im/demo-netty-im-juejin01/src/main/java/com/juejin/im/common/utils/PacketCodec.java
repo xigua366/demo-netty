@@ -1,8 +1,12 @@
 package com.juejin.im.common.utils;
 
 import com.juejin.im.common.protocol.Packet;
+import com.juejin.im.common.protocol.request.CreateGroupRequestPacket;
+import com.juejin.im.common.protocol.request.LogoutRequestPacket;
 import com.juejin.im.common.protocol.request.MessageRequestPacket;
+import com.juejin.im.common.protocol.response.CreateGroupResponsePacket;
 import com.juejin.im.common.protocol.response.LoginResponsePacket;
+import com.juejin.im.common.protocol.response.LogoutResponsePacket;
 import com.juejin.im.common.protocol.response.MessageResponsePacket;
 import com.juejin.im.common.serialize.impl.JSONSerializer;
 import com.juejin.im.common.serialize.Serializer;
@@ -12,7 +16,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.juejin.im.common.protocol.command.Command.*;
+import static com.juejin.im.common.protocol.CommandType.*;
 
 /**
  * <p>
@@ -47,6 +51,10 @@ public class PacketCodec {
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
         packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
         packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
+        packetTypeMap.put(LOGOUT_REQUEST, LogoutRequestPacket.class);
+        packetTypeMap.put(LOGOUT_RESPONSE, LogoutResponsePacket.class);
+        packetTypeMap.put(CREATE_GROUP_REQUEST, CreateGroupRequestPacket.class);
+        packetTypeMap.put(CREATE_GROUP_RESPONSE, CreateGroupResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();

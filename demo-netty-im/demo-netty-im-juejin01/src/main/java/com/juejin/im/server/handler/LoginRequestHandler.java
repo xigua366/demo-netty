@@ -3,11 +3,10 @@ package com.juejin.im.server.handler;
 import com.juejin.im.common.protocol.request.LoginRequestPacket;
 import com.juejin.im.common.protocol.response.LoginResponsePacket;
 import com.juejin.im.common.session.Session;
+import com.juejin.im.common.utils.IDUtil;
 import com.juejin.im.common.utils.SessionUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-
-import java.util.UUID;
 
 /**
  * 处理登录请求的handler
@@ -28,7 +27,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
 
             // 标注一下当前Channel为已登录成功
             Session session = new Session();
-            String userId = randomUserId();
+            String userId = IDUtil.randomId();
             String username = loginRequestPacket.getUsername();
             session.setUserId(userId);
             session.setUsername(username);
@@ -52,7 +51,9 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
         return true;
     }
 
-    private static String randomUserId() {
-        return UUID.randomUUID().toString().split("-")[0];
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) {
+        SessionUtil.unBindSession(ctx.channel());
     }
+
 }

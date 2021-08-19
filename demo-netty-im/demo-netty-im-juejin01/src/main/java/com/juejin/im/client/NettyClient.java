@@ -1,11 +1,13 @@
 package com.juejin.im.client;
 
+import com.juejin.im.client.console.ConsoleCommandManager;
+import com.juejin.im.client.console.LoginConsoleCommand;
+import com.juejin.im.client.handler.CreateGroupResponseHandler;
 import com.juejin.im.client.handler.LoginResponseHandler;
+import com.juejin.im.client.handler.LogoutResponseHandler;
 import com.juejin.im.client.handler.MessageResponseHandler;
 import com.juejin.im.common.codec.PacketDecoder;
 import com.juejin.im.common.codec.PacketEncoder;
-import com.juejin.im.common.protocol.request.LoginRequestPacket;
-import com.juejin.im.common.protocol.request.MessageRequestPacket;
 import com.juejin.im.common.utils.SessionUtil;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -47,8 +49,15 @@ public class NettyClient {
                         ChannelPipeline pipeline = ch.pipeline();
 
                         pipeline.addLast(new PacketDecoder());
+                        // 登录结果响应
                         pipeline.addLast(new LoginResponseHandler());
+                        // 发送普通聊天消息响应
                         pipeline.addLast(new MessageResponseHandler());
+                        // 创建群聊响应
+                        pipeline.addLast(new CreateGroupResponseHandler());
+                        // 退出登录响应
+                        pipeline.addLast(new LogoutResponseHandler());
+                        // 对请求消息进行编码
                         pipeline.addLast(new PacketEncoder());
 
                     }
@@ -91,43 +100,22 @@ public class NettyClient {
     }
 
     private static void startConsoleThread(Channel channel) {
-        Scanner sc = new Scanner(System.in);
-        LoginRequestPacket loginRequestPacket = new LoginRequestPacket();
+        ConsoleCommandManager consoleCommandManager = new ConsoleCommandManager();
+        LoginConsoleCommand loginConsoleCommand = new LoginConsoleCommand();
+        Scanner scanner = new Scanner(System.in);
 
         new Thread(() -> {
             while (!Thread.interrupted()) {
+                // 如果未登录要先登录
                 if (!SessionUtil.hasLogin(channel)) {
-                    System.out.print("输入用户名登录: ");
-                    String username = sc.nextLine();
-                    loginRequestPacket.setUsername(username);
-
-                    // 密码使用默认的
-                    loginRequestPacket.setPassword("pwd");
-
-                    // 发送登录数据包
-                    channel.writeAndFlush(loginRequestPacket);
-                    waitForLoginResponse();
+                    loginConsoleCommand.exec(scanner, channel);
                 } else {
-
-                    // next 与 next 之间的值用空格分开
-                    String toUserId = sc.next();
-                    String message = sc.next();
-
-                    MessageRequestPacket messageRequestPacket = new MessageRequestPacket();
-                    messageRequestPacket.setToUserId(toUserId);
-                    messageRequestPacket.setMessage(message);
-                    channel.writeAndFlush(messageRequestPacket);
+                    consoleCommandManager.exec(scanner, channel);
                 }
             }
         }).start();
     }
 
-    private static void waitForLoginResponse() {
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ignored) {
 
-        }
-    }
 
 }

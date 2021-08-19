@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * <p>
- * 普通通信响应处理器
+ * 发送聊天消息响应处理器
  * </p>
  *
  * @author yangxi

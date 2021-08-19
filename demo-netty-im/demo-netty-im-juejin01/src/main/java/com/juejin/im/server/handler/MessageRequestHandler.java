@@ -11,7 +11,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import java.util.Date;
 
 /**
- * 处理普通通信的handler
+ * 处理发送普通聊天消息请求的handler
  */
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
 

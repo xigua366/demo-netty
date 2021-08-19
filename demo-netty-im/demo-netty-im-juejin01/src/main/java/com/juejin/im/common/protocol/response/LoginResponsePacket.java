@@ -3,8 +3,11 @@ package com.juejin.im.common.protocol.response;
 import com.juejin.im.common.protocol.Packet;
 import lombok.Data;
 
-import static com.juejin.im.common.protocol.command.Command.LOGIN_RESPONSE;
+import static com.juejin.im.common.protocol.CommandType.LOGIN_RESPONSE;
 
+/**
+ * 登录响应结果数据包对象
+ */
 @Data
 public class LoginResponsePacket extends Packet {
 

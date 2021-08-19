@@ -38,6 +38,7 @@
 		<module>demo-netty-tech</module>
 		<module>demo-nio-spring</module>
 		<module>demo-nio-kafka</module>
+		<module>demo-netty-im</module>
 	</modules>
 
 	<dependencyManagement>

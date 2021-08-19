@@ -2,6 +2,7 @@ package com.juejin.im.server;
 
 import com.juejin.im.common.codec.PacketDecoder;
 import com.juejin.im.common.codec.PacketEncoder;
+import com.juejin.im.common.idle.IMIdleStateHandler;
 import com.juejin.im.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -33,7 +34,7 @@ public class NettyServer {
                 .group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .option(ChannelOption.SO_BACKLOG, 1024)
-                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .childOption(ChannelOption.SO_KEEPALIVE, false)
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
 
@@ -41,10 +42,21 @@ public class NettyServer {
                     protected void initChannel(NioSocketChannel ch) {
                         ChannelPipeline pipeline = ch.pipeline();
 
+//                        // idle空闲监测
+//                        pipeline.addLast(new IMIdleStateHandler());
+
+                        // 粘包与拆包问题处理
                         pipeline.addLast(new Spliter());
+
+                        // 业务数据解码处理
                         pipeline.addLast(new PacketDecoder());
+
                         // 登录请求
                         pipeline.addLast(new LoginRequestHandler());
+
+                        // 处理心跳数据包请求（一定要放在AuthHandler前面，而且要用ctx.channel().writeAndFlush()进行输出）
+                        pipeline.addLast(new HeartBeatRequestHandler());
+
                         // 认证鉴权
                         pipeline.addLast(new AuthHandler());
                         // 发送普通聊天消息
@@ -57,10 +69,14 @@ public class NettyServer {
                         pipeline.addLast(new QuitGroupRequestHandler());
                         // 获取群成员请求处理器
                         pipeline.addLast(new ListGroupMembersRequestHandler());
+                        // 发送群聊消息请求处理器
+                        pipeline.addLast(new GroupMessageRequestHandler());
                         // 退出登录请求
                         pipeline.addLast(new LogoutRequestHandler());
                         // 对响应消息进行编码
                         pipeline.addLast(new PacketEncoder());
+
+
                     }
                 });
 

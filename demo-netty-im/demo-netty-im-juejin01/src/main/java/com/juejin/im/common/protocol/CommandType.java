@@ -71,4 +71,24 @@ public interface CommandType {
      * 退出群聊响应
      */
     Byte QUIT_GROUP_RESPONSE = 14;
+
+    /**
+     * 发送群聊消息请求
+     */
+    Byte GROUP_MESSAGE_REQUEST = 15;
+
+    /**
+     * 发送群聊消息响应
+     */
+    Byte GROUP_MESSAGE_RESPONSE = 16;
+
+    /**
+     * 发送心跳请求
+     */
+    Byte HEARTBEAT_REQUEST = 17;
+
+    /**
+     * 发送心跳响应
+     */
+    Byte HEARTBEAT_RESPONSE = 18;
 }

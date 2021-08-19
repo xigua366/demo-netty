@@ -5,7 +5,9 @@ import com.juejin.im.client.console.LoginConsoleCommand;
 import com.juejin.im.client.handler.*;
 import com.juejin.im.common.codec.PacketDecoder;
 import com.juejin.im.common.codec.PacketEncoder;
+import com.juejin.im.common.idle.IMIdleStateHandler;
 import com.juejin.im.common.utils.SessionUtil;
+import com.juejin.im.server.handler.Spliter;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -37,7 +39,7 @@ public class NettyClient {
                 .channel(NioSocketChannel.class)
                 // 连接超时时间，默认是30秒，改为10秒
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10 * 1000)
-                .option(ChannelOption.SO_KEEPALIVE, true)
+                .option(ChannelOption.SO_KEEPALIVE, false)
                 .option(ChannelOption.TCP_NODELAY, true)
                 .handler(new ChannelInitializer<SocketChannel>() {
 
@@ -45,7 +47,15 @@ public class NettyClient {
                     public void initChannel(SocketChannel ch) {
                         ChannelPipeline pipeline = ch.pipeline();
 
+                        // idle空闲监测  思考：SO_KEEPALIVE参数跟IdleStateHandler空闲监测处理器有什么联系吗？
+                        pipeline.addLast(new IMIdleStateHandler());
+
+                        // 粘包与拆包问题处理
+                        pipeline.addLast(new Spliter());
+
+                        // 业务数据解码处理
                         pipeline.addLast(new PacketDecoder());
+
                         // 登录结果响应
                         pipeline.addLast(new LoginResponseHandler());
                         // 发送普通聊天消息响应
@@ -58,10 +68,22 @@ public class NettyClient {
                         pipeline.addLast(new QuitGroupResponseHandler());
                         // 获取群成员响应处理器
                         pipeline.addLast(new ListGroupMembersResponseHandler());
+                        // 发送群聊消息响应处理器
+                        pipeline.addLast(new GroupMessageResponseHandler());
                         // 退出登录响应
                         pipeline.addLast(new LogoutResponseHandler());
+
+                        pipeline.addLast(new HeartBeatResponseHandler());
+
                         // 对请求消息进行编码
                         pipeline.addLast(new PacketEncoder());
+
+                        // 心跳定时器 (好奇这个启用了channelActive方法的InboundHandler为什么一定放到Encoder编码器后面)
+                        pipeline.addLast(new HeartBeatTimerHandler());
+
+
+
+
 
                     }
                 });

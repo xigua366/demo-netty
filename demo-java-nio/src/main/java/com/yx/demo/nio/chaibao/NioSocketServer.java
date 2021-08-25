@@ -10,6 +10,9 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * 演示拆包问题
+ */
 public class NioSocketServer extends Thread {
     ServerSocketChannel serverSocketChannel = null;
     Selector selector = null;

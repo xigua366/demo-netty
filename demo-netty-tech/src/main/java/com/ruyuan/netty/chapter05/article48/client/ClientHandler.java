@@ -22,8 +22,10 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
         RandomAccessFile raf = null;
         long length = -1;
         try {
+            // 说明：自己创建一下sendfile_sample.txt文件，然后把file的值改为自己创建的文件的路径
+            String file = "sendfile_sample.txt";
             // 通过RandomAccessFile打开一个文件
-            raf = new RandomAccessFile("/Users/yangxi/study/code/demo/demo-netty/send.txt", "r");
+            raf = new RandomAccessFile(file, "r");
             length = raf.length();
         } catch (Exception e) {
             e.printStackTrace();

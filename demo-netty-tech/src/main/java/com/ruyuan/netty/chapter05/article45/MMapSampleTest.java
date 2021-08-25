@@ -13,6 +13,7 @@ public class MMapSampleTest {
 
     public static void main(String[] args) throws Exception {
 
+        // 说明：自己创建一下mmap_sample.txt文件，然后把file的值改为自己创建的文件的路径
         String file = "mmap_sample.txt";
         RandomAccessFile memoryMappedFile =
                 new RandomAccessFile(file, "rw");

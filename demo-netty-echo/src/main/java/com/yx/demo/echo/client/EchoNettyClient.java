@@ -72,8 +72,6 @@ public class EchoNettyClient {
 
                 }
 
-
-
             }
 
             //阻塞直到客户端通道关闭

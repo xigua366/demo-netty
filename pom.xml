@@ -51,29 +51,6 @@
 		</dependencies>
 	</dependencyManagement>
 
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<version>2.3.1.RELEASE</version>
-					<configuration>
-						<includeSystemScope>true</includeSystemScope>
-						<fork>true</fork>
-					</configuration>
-					<executions>
-						<execution>
-							<goals>
-								<goal>repackage</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-
 	<repositories>
 		<!--阿里云主仓库，代理了maven central和jcenter仓库 -->
 		<repository>

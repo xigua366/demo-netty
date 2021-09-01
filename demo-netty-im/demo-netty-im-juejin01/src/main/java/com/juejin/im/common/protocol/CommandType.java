@@ -1,5 +1,8 @@
 package com.juejin.im.common.protocol;
 
+/**
+ * 消息指令类型
+ */
 public interface CommandType {
 
     /**

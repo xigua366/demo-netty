@@ -1,4 +1,4 @@
-package com.yx.demo.echo1.server;
+package com.yx.demo.systemin.server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

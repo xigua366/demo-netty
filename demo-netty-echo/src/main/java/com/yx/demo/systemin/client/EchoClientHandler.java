@@ -1,4 +1,4 @@
-package com.yx.demo.echo1.client;
+package com.yx.demo.systemin.client;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
